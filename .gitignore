@@ -1,0 +1,27 @@
+# 编译生成的文件
+/build/
+*.bin
+*.elf
+*.hex
+*.eep
+*.a
+*.ar
+*.d
+
+# Arduino IDE配置文件
+*.sublime-workspace
+*.sublime-project
+*.vscode/
+.vscode/
+*.iml
+
+# 编译过程中的临时文件
+*.swp
+*~
+
+# 依赖库
+/libraries/
+
+# 本地构建文件（如果使用其他构建工具）
+/Debug/
+/Release/
