@@ -9,7 +9,10 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 OneButton button(BUTTON_PIN, true);
 
-int brightness = 153; // 默认亮度，60%亮度的白光
+int brightness = 60; // 默认亮度，0-100的值
+int colorR = 255;    // 默认红色分量，0-255的值
+int colorG = 255;    // 默认绿色分量，0-255的值
+int colorB = 255;    // 默认蓝色分量，0-255的值
 
 void setup() {
   strip.begin();
@@ -28,7 +31,7 @@ void toggleLED() {
   isOn = !isOn;
   
   if (isOn) {
-    strip.fill(strip.Color(brightness, brightness, brightness), 0, NUM_LEDS); // 打开灯带，设置亮度
+    strip.fill(strip.Color(colorR * brightness / 100, colorG * brightness / 100, colorB * brightness / 100), 0, NUM_LEDS); // 打开灯带，设置亮度
   } else {
     strip.fill(strip.Color(0, 0, 0), 0, NUM_LEDS); // 关闭灯带
   }
@@ -42,11 +45,12 @@ void changeColor() {
     {255, 255, 255}, // 白光
     {255, 235, 52}, // 淡黄光
     {52, 84, 255},   // 淡蓝光
-    {255, 255, 0},
-    {0, 255, 255}
   };
   colorIndex = (colorIndex + 1) % 2;
-  strip.fill(strip.Color(colors[colorIndex][0], colors[colorIndex][1], colors[colorIndex][2]), 0, NUM_LEDS);
+  colorR = colors[colorIndex][0];
+  colorG = colors[colorIndex][1];
+  colorB = colors[colorIndex][2];
+  strip.fill(strip.Color(colorR * brightness / 100, colorG * brightness / 100, colorB * brightness / 100), 0, NUM_LEDS);
   strip.show();
 }
 
@@ -57,11 +61,11 @@ void adjustBrightness() {
   if (currentTime - lastPressTime > 500) {
     // 长按超过0.5秒时开始调整亮度
     brightness += BRIGHTNESS_STEP;
-    if (brightness > 255) {
+    if (brightness > 100) {
       brightness = 0; // 亮度循环，从0开始
     }
     
-    strip.fill(strip.Color(brightness, brightness, brightness), 0, NUM_LEDS);
+    strip.fill(strip.Color(colorR * brightness / 100, colorG * brightness / 100, colorB * brightness / 100), 0, NUM_LEDS);
     strip.show();
     
     lastPressTime = currentTime;
